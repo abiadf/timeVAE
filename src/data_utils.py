@@ -121,10 +121,32 @@ def inverse_transform_data(data, scaler):
 
 
 def scale_data(train_data, valid_data):
+    """Changed by F to handle 3D data (samples, timesteps, features)"""
+    # scaler = MinMaxScaler()
+    # scaled_train_data = scaler.fit_transform(train_data)
+    # scaled_valid_data = scaler.transform(valid_data)
+    # return scaled_train_data, scaled_valid_data, scaler
+
+    n_train, n_timesteps, n_features = train_data.shape
+    n_valid = valid_data.shape[0]
+
     scaler = MinMaxScaler()
-    scaled_train_data = scaler.fit_transform(train_data)
-    scaled_valid_data = scaler.transform(valid_data)
-    return scaled_train_data, scaled_valid_data, scaler
+
+    # reshape 3D -> 2D
+    train_2d = train_data.reshape(-1, n_features)  # (n_train*n_timesteps, n_features)
+    valid_2d = valid_data.reshape(-1, n_features)
+
+    # fit on train
+    scaled_train_2d = scaler.fit_transform(train_2d)
+    scaled_valid_2d = scaler.transform(valid_2d)
+
+    # reshape back
+    scaled_train = scaled_train_2d.reshape(n_train, n_timesteps, n_features)
+    scaled_valid = scaled_valid_2d.reshape(n_valid, n_timesteps, n_features)
+
+    return scaled_train, scaled_valid, scaler
+
+
 
 
 def save_scaler(scaler: MinMaxScaler, dir_path: str) -> None:

@@ -8,7 +8,7 @@ __pycache__/
 .env
 .venv
 env/
-venv/
+venv*/
 ENV/
 env.bak/
 venv.bak/
@@ -17,3 +17,7 @@ venv.bak/
 **/.ipynb_checkpoints/
 
 tmp/
+
+data/
+outputs/
+vae_output/

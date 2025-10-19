@@ -13,7 +13,9 @@ from tensorflow.keras.metrics import Mean
 from tensorflow.keras.backend import random_normal
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
+from keras.saving import register_keras_serializable
 
+@register_keras_serializable()
 class Sampling(Layer):
     """Uses (z_mean, z_log_var) to sample z, the vector encoding a digit."""
 
@@ -143,8 +145,8 @@ class BaseVariationalAutoencoder(Model, ABC):
 
         return {
             "loss": self.total_loss_tracker.result(),
-            "reconstruction_loss": self.reconstruction_loss_tracker.result(),
-            "kl_loss": self.kl_loss_tracker.result(),
+            # "reconstruction_loss": self.reconstruction_loss_tracker.result(),
+        #     "kl_loss": self.kl_loss_tracker.result(),
         }
 
     def test_step(self, X):
